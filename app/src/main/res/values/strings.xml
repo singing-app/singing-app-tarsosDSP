@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">방구석 노래방</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">방구석 박효신</string>
+    <string name="nav_header_subtitle">park@wku.ac.kr</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_pitch">최고음 측정</string>
+    <string name="menu_slideshow">음원 태그</string>
+    <string name="menu_chart">음원 차트</string>
+</resources>
