@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.view.View;
@@ -29,6 +30,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteOrder;
+import java.util.ArrayList;
 import java.util.Map;
 
 import be.tarsos.dsp.AudioDispatcher;
@@ -50,13 +52,41 @@ public class MainActivity extends AppCompatActivity {
 
     TextView pitchTextView;
     Button recordButton;
-    Button playButton;
+    // Button playButton;
+    CheckBox highPitchCheckbox;
 
     boolean isRecording = false;
     String filename = "recorded_sound.wav";
 
     private LineChart chart;
-    private float datanum = 0;
+    public int time = 0;
+
+    // timer.start();
+
+    public void setTime(int v){
+        time = v;
+    }
+    public int getTime(){
+        return time;
+    }
+
+    Thread timer = new Thread(){
+        @Override
+        public void run() {
+            // while(!Thread.currentThread().isInterrupted()) {
+            while(true) {
+                try {
+                    Thread.sleep(1000);
+                    time += 1;
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    };
+
+
+    public float highPitchAvg = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,7 +165,8 @@ public class MainActivity extends AppCompatActivity {
 
         pitchTextView = findViewById(R.id.pitchTextView);
         recordButton = findViewById(R.id.recordButton);
-        playButton = findViewById(R.id.playButton);
+        // playButton = findViewById(R.id.playButton);
+        highPitchCheckbox = findViewById(R.id.highPitchCheckbox);
 
         recordButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,21 +174,21 @@ public class MainActivity extends AppCompatActivity {
                 if (!isRecording) {
                     recordAudio();
                     isRecording = true;
-                    recordButton.setText("중지");
+                    recordButton.setText("측정 중단");
                 } else {
                     stopRecording();
                     isRecording = false;
-                    recordButton.setText("녹음");
+                    recordButton.setText("측정 시작");
                 }
             }
         });
 
-        playButton.setOnClickListener(new View.OnClickListener() {
+        /* playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 playAudio();
             }
-        });
+        }); */
     }
 
     public void addEntry(float num) {
@@ -202,8 +233,26 @@ public class MainActivity extends AppCompatActivity {
         return set;
     }
 
-    public void playAudio() {
+
+    public float calcHighPitchAvg(ArrayList<Float> arr){
+        if (arr.isEmpty()){
+            return 0;
+        }
+
+        float result = 0;
+        final int size = arr.size();
+
+        for(int i = 0; i < size; i++){
+            result += arr.get(i);
+        }
+        result /= size;
+        return result;
+    }
+
+    public void recordAudio() {
         try {
+
+
             releaseDispatcher();
 
             FileInputStream fileInputStream = new FileInputStream(file);
@@ -212,20 +261,44 @@ public class MainActivity extends AppCompatActivity {
             AudioProcessor playerProcessor = new AndroidAudioPlayer(tarsosDSPAudioFormat, 2048, 0);
             dispatcher.addAudioProcessor(playerProcessor);
 
+            ArrayList<Float> datanumList = new ArrayList<Float>();
+
+            setTime(0);
+            final int timeLimit = 3;
+            timer.start();
+
             PitchDetectionHandler pitchDetectionHandler = new PitchDetectionHandler() {
                 @Override
                 public void handlePitch(PitchDetectionResult res, AudioEvent e) {
                     final float pitchInHz = res.getPitch();
-                    datanum = pitchInHz;
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            pitchTextView.setText(pitchInHz + "");
-                            addEntry(datanum);
-                        }
-                    });
+                    final float datanum = pitchInHz;
+                    datanumList.add(datanum);
+
+                    if (highPitchCheckbox.isChecked()){
+
+                        int remainingTime = timeLimit - getTime();
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                pitchTextView.setText(time + " 낼 수 있는 최고음을 " + timeLimit + "초간 유지하세요: " + remainingTime);
+                                addEntry(datanum);
+                            }
+                        });
+                    }
+
+                    else {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                pitchTextView.setText(pitchInHz + "");
+                                addEntry(datanum);
+                            }
+                        });
+                    }
                 }
             };
+
 
             AudioProcessor pitchProcessor = new PitchProcessor(PitchProcessor.PitchEstimationAlgorithm.FFT_YIN, 22050, 1024, pitchDetectionHandler);
             dispatcher.addAudioProcessor(pitchProcessor);
@@ -233,12 +306,21 @@ public class MainActivity extends AppCompatActivity {
             Thread audioThread = new Thread(dispatcher, "Audio Thread");
             audioThread.start();
 
+            if(highPitchCheckbox.isChecked() && (getTime() >= timeLimit)){
+                highPitchAvg = calcHighPitchAvg(datanumList);
+                pitchTextView.setText("최고음: " + highPitchAvg);
+                stopRecording();
+                // timer.interrupt();
+
+
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void recordAudio() {
+    /* public void playAudio() {
         releaseDispatcher();
         dispatcher = AudioDispatcherFactory.fromDefaultMicrophone(22050, 1024, 0);
 
@@ -271,7 +353,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+    } */
 
     public void stopRecording() {
         releaseDispatcher();

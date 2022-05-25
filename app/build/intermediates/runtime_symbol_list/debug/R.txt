@@ -2603,6 +2603,7 @@ int id groups 0x7f0800b3
 int id guideline 0x7f0800b4
 int id header_title 0x7f0800b5
 int id hideable 0x7f0800b6
+int id highPitchCheckbox 0x7f0801b3
 int id home 0x7f0800b7
 int id homeAsUp 0x7f0800b8
 int id honorRequest 0x7f0800b9
@@ -2717,7 +2718,6 @@ int id peekHeight 0x7f080125
 int id percent 0x7f080126
 int id pin 0x7f080127
 int id pitchTextView 0x7f080128
-int id playButton 0x7f080129
 int id position 0x7f08012a
 int id postLayout 0x7f08012b
 int id progress_circular 0x7f08012c
@@ -2813,7 +2813,6 @@ int id textSpacerNoButtons 0x7f080185
 int id textSpacerNoTitle 0x7f080186
 int id textStart 0x7f080187
 int id textTop 0x7f080188
-int id textView 0x7f080189
 int id text_input_end_icon 0x7f08018a
 int id text_input_error_icon 0x7f08018b
 int id text_input_start_icon 0x7f08018c

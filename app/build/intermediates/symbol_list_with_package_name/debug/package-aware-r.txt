@@ -2604,6 +2604,7 @@ id groups
 id guideline
 id header_title
 id hideable
+id highPitchCheckbox
 id home
 id homeAsUp
 id honorRequest
@@ -2718,7 +2719,6 @@ id peekHeight
 id percent
 id pin
 id pitchTextView
-id playButton
 id position
 id postLayout
 id progress_circular
@@ -2814,7 +2814,6 @@ id textSpacerNoButtons
 id textSpacerNoTitle
 id textStart
 id textTop
-id textView
 id text_input_end_icon
 id text_input_error_icon
 id text_input_start_icon

@@ -11,10 +11,9 @@ color white
 drawable ic_launcher_background
 drawable ic_launcher_foreground
 id LineChart
+id highPitchCheckbox
 id pitchTextView
-id playButton
 id recordButton
-id textView
 layout activity_main
 mipmap ic_launcher
 mipmap ic_launcher_round
