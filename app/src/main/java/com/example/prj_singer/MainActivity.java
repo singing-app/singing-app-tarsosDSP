@@ -1,7 +1,9 @@
 package com.example.prj_singer;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
@@ -50,6 +52,8 @@ import be.tarsos.dsp.pitch.PitchProcessor;
 import be.tarsos.dsp.writer.WriterProcessor;
 
 public class MainActivity extends AppCompatActivity {
+    DbOpenHelper mDbOpenHelper = new DbOpenHelper(this);
+
     AudioDispatcher dispatcher;
     TarsosDSPAudioFormat tarsosDSPAudioFormat;
     File file;
@@ -76,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
     Timer timer = new Timer();
     static TimerTask task;
     int remainingTime = 0;
-    float userHighPitchAvg = 0;
+    float userHighPitchAvg = 0;     // 유저 최고음
 
     private TimerTask mkTimerTask() {
         setTime(0);
@@ -99,9 +103,9 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             pitchTextView.setText("당신의 최고음은: " + userHighPitchAvg);
-                            Log.d("highPitch", recordPitchList+"");
                         }
                     });
+                    mDbOpenHelper.insertColumn("test", userHighPitchAvg+"");
                     recordButton.setText("측정 시작");
                     stopRecording();
                 }
@@ -214,6 +218,27 @@ public class MainActivity extends AppCompatActivity {
                 playAudio();
             }
         }); */
+
+        // SQLite DB
+        mDbOpenHelper.open();
+        mDbOpenHelper.create();
+        Cursor iCursor = mDbOpenHelper.selectColumns();
+        while(iCursor.moveToNext()){
+            @SuppressLint("Range")
+            String tempID = iCursor.getString(iCursor.getColumnIndex("userid"));
+            @SuppressLint("Range")
+            String tempHighPitch = iCursor.getString(iCursor.getColumnIndex("highpitch"));
+
+            userHighPitchAvg = Float.parseFloat(tempHighPitch);
+        }
+        if (userHighPitchAvg != 0){
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    pitchTextView.setText("나의 음역대: "+userHighPitchAvg);
+                }
+            });
+        }
     }
 
     public void addEntry(float num) {
@@ -365,40 +390,7 @@ public class MainActivity extends AppCompatActivity {
         }catch(Exception e) {
             e.printStackTrace();
         }
-    }
-
-    /* public void playAudio() {
-        try {
-            releaseDispatcher();
-
-            FileInputStream fileInputStream = new FileInputStream(file);
-            dispatcher = new AudioDispatcher(new UniversalAudioInputStream(fileInputStream, tarsosDSPAudioFormat), 1024, 0);
-            PitchDetectionHandler pitchDetectionHandler = new PitchDetectionHandler() {
-                @Override
-                public void handlePitch(PitchDetectionResult res, AudioEvent e) {
-                    final float pitchInHz = res.getPitch();
-                    final float datanum = pitchInHz;
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            pitchTextView.setText(pitchInHz + "");
-                            addEntry(datanum);
-                        }
-                    });
-                }
-            };
-
-            AudioProcessor pitchProcessor = new PitchProcessor(PitchProcessor.PitchEstimationAlgorithm.FFT_YIN, 22050, 1024, pitchDetectionHandler);
-            dispatcher.addAudioProcessor(pitchProcessor);
-
-            Thread audioThread = new Thread(dispatcher, "Audio Thread");
-            audioThread.start();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    } */
-
+    }*/
 
     public void stopRecording() {
         if(task != null) {
