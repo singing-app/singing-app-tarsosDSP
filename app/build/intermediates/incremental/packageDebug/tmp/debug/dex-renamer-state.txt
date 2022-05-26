@@ -1,4 +1,4 @@
-#Wed May 25 19:54:22 KST 2022
+#Thu May 26 17:54:19 KST 2022
 base.2=C\:\\Users\\wku\\sing\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\8\\classes.dex
 path.2=8/classes.dex
 base.1=C\:\\Users\\wku\\sing\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex

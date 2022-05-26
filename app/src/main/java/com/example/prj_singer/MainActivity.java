@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -32,6 +33,8 @@ import java.io.RandomAccessFile;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import be.tarsos.dsp.AudioDispatcher;
 import be.tarsos.dsp.AudioEvent;
@@ -59,37 +62,51 @@ public class MainActivity extends AppCompatActivity {
     String filename = "recorded_sound.wav";
 
     private LineChart chart;
-    public int time = 0;
 
-    // timer.start();
-
+    static int time = 0;
     public void setTime(int v){
         time = v;
     }
     public int getTime(){
         return time;
     }
+    final int timeLimit = 3;
 
-    Thread timer = new Thread(){
-        @Override
-        public void run() {
-            // while(!Thread.currentThread().isInterrupted()) {
-            while(true) {
-                try {
-                    Thread.sleep(1000);
-                    time += 1;
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+    Timer timer = new Timer();
+    static TimerTask task;
+    int remainingTime = 0;
+    float userHighPitchAvg = 0;
+
+    private TimerTask mkTimerTask() {
+        setTime(0);
+        TimerTask tempTesk = new TimerTask() {
+            @Override
+            public void run() {
+                remainingTime = timeLimit - getTime();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        pitchTextView.setText(" 낼 수 있는 최고음을 3초간 유지하세요: " + remainingTime);
+                    }
+                });
+                time++;
+                if(time > timeLimit){
+                    isRecording = false;
+                    setTime(0);
+                    userHighPitchAvg = calcHighPitchAvg(recordPitchList);
+                    recordButton.setText("측정 시작");
+                    stopRecording();
                 }
             }
-        }
-    };
-
+        };
+        return tempTesk;
+    }
 
     public float highPitchAvg = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // timer.purge();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -233,14 +250,12 @@ public class MainActivity extends AppCompatActivity {
         return set;
     }
 
-
+    ArrayList<Float> recordPitchList = new ArrayList<Float>();
     public float calcHighPitchAvg(ArrayList<Float> arr){
-        if (arr.isEmpty()){
-            return 0;
-        }
+        if (arr.isEmpty()) { return -1; }
 
-        float result = 0;
         final int size = arr.size();
+        float result = 0;
 
         for(int i = 0; i < size; i++){
             result += arr.get(i);
@@ -251,8 +266,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void recordAudio() {
         try {
-
-
             releaseDispatcher();
 
             FileInputStream fileInputStream = new FileInputStream(file);
@@ -261,28 +274,24 @@ public class MainActivity extends AppCompatActivity {
             AudioProcessor playerProcessor = new AndroidAudioPlayer(tarsosDSPAudioFormat, 2048, 0);
             dispatcher.addAudioProcessor(playerProcessor);
 
-            ArrayList<Float> datanumList = new ArrayList<Float>();
 
-            setTime(0);
-            final int timeLimit = 3;
-            timer.start();
-
+            if (highPitchCheckbox.isChecked()){
+                recordPitchList.clear();
+                task = mkTimerTask();
+                timer.scheduleAtFixedRate(task, 0, 1000);
+            }
             PitchDetectionHandler pitchDetectionHandler = new PitchDetectionHandler() {
                 @Override
                 public void handlePitch(PitchDetectionResult res, AudioEvent e) {
                     final float pitchInHz = res.getPitch();
                     final float datanum = pitchInHz;
-                    datanumList.add(datanum);
 
                     if (highPitchCheckbox.isChecked()){
-
-                        int remainingTime = timeLimit - getTime();
-
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                pitchTextView.setText(time + " 낼 수 있는 최고음을 " + timeLimit + "초간 유지하세요: " + remainingTime);
                                 addEntry(datanum);
+                                recordPitchList.add(datanum);
                             }
                         });
                     }
@@ -299,6 +308,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             };
 
+            Log.d("myTag", "This is my message");
+
 
             AudioProcessor pitchProcessor = new PitchProcessor(PitchProcessor.PitchEstimationAlgorithm.FFT_YIN, 22050, 1024, pitchDetectionHandler);
             dispatcher.addAudioProcessor(pitchProcessor);
@@ -306,14 +317,14 @@ public class MainActivity extends AppCompatActivity {
             Thread audioThread = new Thread(dispatcher, "Audio Thread");
             audioThread.start();
 
-            if(highPitchCheckbox.isChecked() && (getTime() >= timeLimit)){
+            /* if(highPitchCheckbox.isChecked() && (getTime() >= timeLimit)){
                 highPitchAvg = calcHighPitchAvg(datanumList);
                 pitchTextView.setText("최고음: " + highPitchAvg);
                 stopRecording();
                 // timer.interrupt();
 
 
-            }
+            } */
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -356,6 +367,9 @@ public class MainActivity extends AppCompatActivity {
     } */
 
     public void stopRecording() {
+        if(task != null) {
+            task.cancel();
+        }
         releaseDispatcher();
     }
 
