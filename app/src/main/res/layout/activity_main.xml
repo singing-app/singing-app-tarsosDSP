@@ -32,11 +32,11 @@ s
         android:layout_height="wrap_content"
         android:text="측정 시작" />
 
-    <!--<Button
+    <!-- <Button
         android:id="@+id/playButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="재생" />    -->
+        android:text="재생" /> -->
 
     <CheckBox
         android:id="@+id/highPitchCheckbox"

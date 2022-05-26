@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -94,6 +95,13 @@ public class MainActivity extends AppCompatActivity {
                     isRecording = false;
                     setTime(0);
                     userHighPitchAvg = calcHighPitchAvg(recordPitchList);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            pitchTextView.setText("당신의 최고음은: " + userHighPitchAvg);
+                            Log.d("highPitch", recordPitchList+"");
+                        }
+                    });
                     recordButton.setText("측정 시작");
                     stopRecording();
                 }
@@ -265,20 +273,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void recordAudio() {
+        releaseDispatcher();
+        dispatcher = AudioDispatcherFactory.fromDefaultMicrophone(22050, 1024, 0);
+
         try {
-            releaseDispatcher();
-
-            FileInputStream fileInputStream = new FileInputStream(file);
-            dispatcher = new AudioDispatcher(new UniversalAudioInputStream(fileInputStream, tarsosDSPAudioFormat), 1024, 0);
-
-            AudioProcessor playerProcessor = new AndroidAudioPlayer(tarsosDSPAudioFormat, 2048, 0);
-            dispatcher.addAudioProcessor(playerProcessor);
-
+            RandomAccessFile randomAccessFile = new RandomAccessFile(file, "rw");
+            AudioProcessor recordProcessor = new WriterProcessor(tarsosDSPAudioFormat, randomAccessFile);
+            dispatcher.addAudioProcessor(recordProcessor);
 
             if (highPitchCheckbox.isChecked()){
                 recordPitchList.clear();
                 task = mkTimerTask();
-                timer.scheduleAtFixedRate(task, 0, 1000);
+                timer.scheduleAtFixedRate(task, 10, 1000);
             }
             PitchDetectionHandler pitchDetectionHandler = new PitchDetectionHandler() {
                 @Override
@@ -291,7 +297,7 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 addEntry(datanum);
-                                recordPitchList.add(datanum);
+                                if(datanum != -1 && datanum < 5000) { recordPitchList.add(datanum); }
                             }
                         });
                     }
@@ -308,9 +314,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             };
 
-            Log.d("myTag", "This is my message");
-
-
             AudioProcessor pitchProcessor = new PitchProcessor(PitchProcessor.PitchEstimationAlgorithm.FFT_YIN, 22050, 1024, pitchDetectionHandler);
             dispatcher.addAudioProcessor(pitchProcessor);
 
@@ -322,8 +325,6 @@ public class MainActivity extends AppCompatActivity {
                 pitchTextView.setText("최고음: " + highPitchAvg);
                 stopRecording();
                 // timer.interrupt();
-
-
             } */
 
         } catch (Exception e) {
@@ -331,20 +332,52 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /* public void playAudio()
+    {
+        try{
+            releaseDispatcher();
+
+            FileInputStream fileInputStream = new FileInputStream(file);
+            dispatcher = new AudioDispatcher(new UniversalAudioInputStream(fileInputStream, tarsosDSPAudioFormat), 1024, 0);
+
+            AudioProcessor playerProcessor = new AndroidAudioPlayer(tarsosDSPAudioFormat, 2048, 0);
+            dispatcher.addAudioProcessor(playerProcessor);
+
+            PitchDetectionHandler pitchDetectionHandler = new PitchDetectionHandler() {
+                @Override
+                public void handlePitch(PitchDetectionResult res, AudioEvent e){
+                    final float pitchInHz = res.getPitch();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            pitchTextView.setText(pitchInHz + "");
+                        }
+                    });
+                }
+            };
+
+            AudioProcessor pitchProcessor = new PitchProcessor(PitchProcessor.PitchEstimationAlgorithm.FFT_YIN, 22050, 1024, pitchDetectionHandler);
+            dispatcher.addAudioProcessor(pitchProcessor);
+
+            Thread audioThread = new Thread(dispatcher, "Audio Thread");
+            audioThread.start();
+
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     /* public void playAudio() {
-        releaseDispatcher();
-        dispatcher = AudioDispatcherFactory.fromDefaultMicrophone(22050, 1024, 0);
-
         try {
-            RandomAccessFile randomAccessFile = new RandomAccessFile(file, "rw");
-            AudioProcessor recordProcessor = new WriterProcessor(tarsosDSPAudioFormat, randomAccessFile);
-            dispatcher.addAudioProcessor(recordProcessor);
+            releaseDispatcher();
 
+            FileInputStream fileInputStream = new FileInputStream(file);
+            dispatcher = new AudioDispatcher(new UniversalAudioInputStream(fileInputStream, tarsosDSPAudioFormat), 1024, 0);
             PitchDetectionHandler pitchDetectionHandler = new PitchDetectionHandler() {
                 @Override
                 public void handlePitch(PitchDetectionResult res, AudioEvent e) {
                     final float pitchInHz = res.getPitch();
-                    datanum = pitchInHz;
+                    final float datanum = pitchInHz;
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -365,6 +398,7 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     } */
+
 
     public void stopRecording() {
         if(task != null) {

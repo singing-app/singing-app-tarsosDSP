@@ -6,77 +6,76 @@
 6
 7    <uses-sdk
 8        android:minSdkVersion="21"
-8-->C:\Users\wku\sing\app\src\main\AndroidManifest.xml
+8-->C:\Users\rkdgu\AndroidStudioProjects\prj_singer\app\src\main\AndroidManifest.xml
 9        android:targetSdkVersion="22" />
-9-->C:\Users\wku\sing\app\src\main\AndroidManifest.xml
+9-->C:\Users\rkdgu\AndroidStudioProjects\prj_singer\app\src\main\AndroidManifest.xml
 10
 11    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-11-->C:\Users\wku\sing\app\src\main\AndroidManifest.xml:5:5-70
-11-->C:\Users\wku\sing\app\src\main\AndroidManifest.xml:5:22-68
+11-->C:\Users\rkdgu\AndroidStudioProjects\prj_singer\app\src\main\AndroidManifest.xml:5:5-70
+11-->C:\Users\rkdgu\AndroidStudioProjects\prj_singer\app\src\main\AndroidManifest.xml:5:22-68
 12    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-12-->C:\Users\wku\sing\app\src\main\AndroidManifest.xml:6:5-80
-12-->C:\Users\wku\sing\app\src\main\AndroidManifest.xml:6:22-78
+12-->C:\Users\rkdgu\AndroidStudioProjects\prj_singer\app\src\main\AndroidManifest.xml:6:5-80
+12-->C:\Users\rkdgu\AndroidStudioProjects\prj_singer\app\src\main\AndroidManifest.xml:6:22-78
 13    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-13-->C:\Users\wku\sing\app\src\main\AndroidManifest.xml:7:5-79
-13-->C:\Users\wku\sing\app\src\main\AndroidManifest.xml:7:22-77
+13-->C:\Users\rkdgu\AndroidStudioProjects\prj_singer\app\src\main\AndroidManifest.xml:7:5-79
+13-->C:\Users\rkdgu\AndroidStudioProjects\prj_singer\app\src\main\AndroidManifest.xml:7:22-77
 14
 15    <application
-15-->C:\Users\wku\sing\app\src\main\AndroidManifest.xml:9:5-25:19
+15-->C:\Users\rkdgu\AndroidStudioProjects\prj_singer\app\src\main\AndroidManifest.xml:9:5-25:19
 16        android:allowBackup="true"
-16-->C:\Users\wku\sing\app\src\main\AndroidManifest.xml:10:9-35
+16-->C:\Users\rkdgu\AndroidStudioProjects\prj_singer\app\src\main\AndroidManifest.xml:10:9-35
 17        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-17-->[androidx.core:core:1.7.0] C:\Users\wku\.gradle\caches\transforms-3\02483169c4c9e0ddffa88758188ac6f1\transformed\core-1.7.0\AndroidManifest.xml:24:18-86
+17-->[androidx.core:core:1.7.0] C:\Users\rkdgu\.gradle\caches\transforms-3\02483169c4c9e0ddffa88758188ac6f1\transformed\core-1.7.0\AndroidManifest.xml:24:18-86
 18        android:debuggable="true"
 19        android:icon="@mipmap/ic_launcher"
-19-->C:\Users\wku\sing\app\src\main\AndroidManifest.xml:11:9-43
+19-->C:\Users\rkdgu\AndroidStudioProjects\prj_singer\app\src\main\AndroidManifest.xml:11:9-43
 20        android:label="@string/app_name"
-20-->C:\Users\wku\sing\app\src\main\AndroidManifest.xml:12:9-41
+20-->C:\Users\rkdgu\AndroidStudioProjects\prj_singer\app\src\main\AndroidManifest.xml:12:9-41
 21        android:roundIcon="@mipmap/ic_launcher_round"
-21-->C:\Users\wku\sing\app\src\main\AndroidManifest.xml:13:9-54
+21-->C:\Users\rkdgu\AndroidStudioProjects\prj_singer\app\src\main\AndroidManifest.xml:13:9-54
 22        android:supportsRtl="true"
-22-->C:\Users\wku\sing\app\src\main\AndroidManifest.xml:14:9-35
-23        android:testOnly="true"
-24        android:theme="@style/Theme.Prj_singer" >
-24-->C:\Users\wku\sing\app\src\main\AndroidManifest.xml:15:9-48
-25        <activity
-25-->C:\Users\wku\sing\app\src\main\AndroidManifest.xml:16:9-24:20
-26            android:name="com.example.prj_singer.MainActivity"
-26-->C:\Users\wku\sing\app\src\main\AndroidManifest.xml:17:13-41
-27            android:exported="true" >
-27-->C:\Users\wku\sing\app\src\main\AndroidManifest.xml:18:13-36
-28            <intent-filter>
-28-->C:\Users\wku\sing\app\src\main\AndroidManifest.xml:19:13-23:29
-29                <action android:name="android.intent.action.MAIN" />
-29-->C:\Users\wku\sing\app\src\main\AndroidManifest.xml:20:17-69
-29-->C:\Users\wku\sing\app\src\main\AndroidManifest.xml:20:25-66
-30
-31                <category android:name="android.intent.category.LAUNCHER" />
-31-->C:\Users\wku\sing\app\src\main\AndroidManifest.xml:22:17-77
-31-->C:\Users\wku\sing\app\src\main\AndroidManifest.xml:22:27-74
-32            </intent-filter>
-33        </activity>
-34
-35        <provider
-35-->[androidx.emoji2:emoji2:1.0.0] C:\Users\wku\.gradle\caches\transforms-3\278083bef5dd79cb476949a0d92ce592\transformed\emoji2-1.0.0\AndroidManifest.xml:26:9-34:20
-36            android:name="androidx.startup.InitializationProvider"
-36-->[androidx.emoji2:emoji2:1.0.0] C:\Users\wku\.gradle\caches\transforms-3\278083bef5dd79cb476949a0d92ce592\transformed\emoji2-1.0.0\AndroidManifest.xml:27:13-67
-37            android:authorities="com.example.prj_singer.androidx-startup"
-37-->[androidx.emoji2:emoji2:1.0.0] C:\Users\wku\.gradle\caches\transforms-3\278083bef5dd79cb476949a0d92ce592\transformed\emoji2-1.0.0\AndroidManifest.xml:28:13-68
-38            android:exported="false" >
-38-->[androidx.emoji2:emoji2:1.0.0] C:\Users\wku\.gradle\caches\transforms-3\278083bef5dd79cb476949a0d92ce592\transformed\emoji2-1.0.0\AndroidManifest.xml:29:13-37
-39            <meta-data
-39-->[androidx.emoji2:emoji2:1.0.0] C:\Users\wku\.gradle\caches\transforms-3\278083bef5dd79cb476949a0d92ce592\transformed\emoji2-1.0.0\AndroidManifest.xml:31:13-33:52
-40                android:name="androidx.emoji2.text.EmojiCompatInitializer"
-40-->[androidx.emoji2:emoji2:1.0.0] C:\Users\wku\.gradle\caches\transforms-3\278083bef5dd79cb476949a0d92ce592\transformed\emoji2-1.0.0\AndroidManifest.xml:32:17-75
-41                android:value="androidx.startup" />
-41-->[androidx.emoji2:emoji2:1.0.0] C:\Users\wku\.gradle\caches\transforms-3\278083bef5dd79cb476949a0d92ce592\transformed\emoji2-1.0.0\AndroidManifest.xml:33:17-49
-42            <meta-data
-42-->[androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\wku\.gradle\caches\transforms-3\4d932a67b7be3c4366d55752ebd69384\transformed\lifecycle-process-2.4.0\AndroidManifest.xml:31:13-33:52
-43                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
-43-->[androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\wku\.gradle\caches\transforms-3\4d932a67b7be3c4366d55752ebd69384\transformed\lifecycle-process-2.4.0\AndroidManifest.xml:32:17-78
-44                android:value="androidx.startup" />
-44-->[androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\wku\.gradle\caches\transforms-3\4d932a67b7be3c4366d55752ebd69384\transformed\lifecycle-process-2.4.0\AndroidManifest.xml:33:17-49
-45        </provider>
-46    </application>
-47
-48</manifest>
+22-->C:\Users\rkdgu\AndroidStudioProjects\prj_singer\app\src\main\AndroidManifest.xml:14:9-35
+23        android:theme="@style/Theme.Prj_singer" >
+23-->C:\Users\rkdgu\AndroidStudioProjects\prj_singer\app\src\main\AndroidManifest.xml:15:9-48
+24        <activity
+24-->C:\Users\rkdgu\AndroidStudioProjects\prj_singer\app\src\main\AndroidManifest.xml:16:9-24:20
+25            android:name="com.example.prj_singer.MainActivity"
+25-->C:\Users\rkdgu\AndroidStudioProjects\prj_singer\app\src\main\AndroidManifest.xml:17:13-41
+26            android:exported="true" >
+26-->C:\Users\rkdgu\AndroidStudioProjects\prj_singer\app\src\main\AndroidManifest.xml:18:13-36
+27            <intent-filter>
+27-->C:\Users\rkdgu\AndroidStudioProjects\prj_singer\app\src\main\AndroidManifest.xml:19:13-23:29
+28                <action android:name="android.intent.action.MAIN" />
+28-->C:\Users\rkdgu\AndroidStudioProjects\prj_singer\app\src\main\AndroidManifest.xml:20:17-69
+28-->C:\Users\rkdgu\AndroidStudioProjects\prj_singer\app\src\main\AndroidManifest.xml:20:25-66
+29
+30                <category android:name="android.intent.category.LAUNCHER" />
+30-->C:\Users\rkdgu\AndroidStudioProjects\prj_singer\app\src\main\AndroidManifest.xml:22:17-77
+30-->C:\Users\rkdgu\AndroidStudioProjects\prj_singer\app\src\main\AndroidManifest.xml:22:27-74
+31            </intent-filter>
+32        </activity>
+33
+34        <provider
+34-->[androidx.emoji2:emoji2:1.0.0] C:\Users\rkdgu\.gradle\caches\transforms-3\278083bef5dd79cb476949a0d92ce592\transformed\emoji2-1.0.0\AndroidManifest.xml:26:9-34:20
+35            android:name="androidx.startup.InitializationProvider"
+35-->[androidx.emoji2:emoji2:1.0.0] C:\Users\rkdgu\.gradle\caches\transforms-3\278083bef5dd79cb476949a0d92ce592\transformed\emoji2-1.0.0\AndroidManifest.xml:27:13-67
+36            android:authorities="com.example.prj_singer.androidx-startup"
+36-->[androidx.emoji2:emoji2:1.0.0] C:\Users\rkdgu\.gradle\caches\transforms-3\278083bef5dd79cb476949a0d92ce592\transformed\emoji2-1.0.0\AndroidManifest.xml:28:13-68
+37            android:exported="false" >
+37-->[androidx.emoji2:emoji2:1.0.0] C:\Users\rkdgu\.gradle\caches\transforms-3\278083bef5dd79cb476949a0d92ce592\transformed\emoji2-1.0.0\AndroidManifest.xml:29:13-37
+38            <meta-data
+38-->[androidx.emoji2:emoji2:1.0.0] C:\Users\rkdgu\.gradle\caches\transforms-3\278083bef5dd79cb476949a0d92ce592\transformed\emoji2-1.0.0\AndroidManifest.xml:31:13-33:52
+39                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+39-->[androidx.emoji2:emoji2:1.0.0] C:\Users\rkdgu\.gradle\caches\transforms-3\278083bef5dd79cb476949a0d92ce592\transformed\emoji2-1.0.0\AndroidManifest.xml:32:17-75
+40                android:value="androidx.startup" />
+40-->[androidx.emoji2:emoji2:1.0.0] C:\Users\rkdgu\.gradle\caches\transforms-3\278083bef5dd79cb476949a0d92ce592\transformed\emoji2-1.0.0\AndroidManifest.xml:33:17-49
+41            <meta-data
+41-->[androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\rkdgu\.gradle\caches\transforms-3\4d932a67b7be3c4366d55752ebd69384\transformed\lifecycle-process-2.4.0\AndroidManifest.xml:31:13-33:52
+42                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+42-->[androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\rkdgu\.gradle\caches\transforms-3\4d932a67b7be3c4366d55752ebd69384\transformed\lifecycle-process-2.4.0\AndroidManifest.xml:32:17-78
+43                android:value="androidx.startup" />
+43-->[androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\rkdgu\.gradle\caches\transforms-3\4d932a67b7be3c4366d55752ebd69384\transformed\lifecycle-process-2.4.0\AndroidManifest.xml:33:17-49
+44        </provider>
+45    </application>
+46
+47</manifest>
