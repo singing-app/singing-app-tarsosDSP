@@ -52,6 +52,8 @@ import be.tarsos.dsp.pitch.PitchProcessor;
 import be.tarsos.dsp.writer.WriterProcessor;
 
 public class MainActivity extends AppCompatActivity {
+    FrequencyToInterval FTI = new FrequencyToInterval();
+
     DbOpenHelper mDbOpenHelper = new DbOpenHelper(this);
 
     AudioDispatcher dispatcher;
@@ -99,10 +101,11 @@ public class MainActivity extends AppCompatActivity {
                     isRecording = false;
                     setTime(0);
                     userHighPitchAvg = calcHighPitchAvg(recordPitchList);
+
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            pitchTextView.setText("당신의 최고음은: " + userHighPitchAvg);
+                            pitchTextView.setText("당신의 최고음은: " + FTI.FI(userHighPitchAvg));
                         }
                     });
                     mDbOpenHelper.insertColumn("test", userHighPitchAvg+"");
@@ -212,6 +215,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        highPitchCheckbox.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                stopRecording();
+            }
+        });
+
         /* playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -235,7 +245,7 @@ public class MainActivity extends AppCompatActivity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    pitchTextView.setText("나의 음역대: "+userHighPitchAvg);
+                    pitchTextView.setText("나의 음역대: "+ FTI.FI(userHighPitchAvg));
                 }
             });
         }
@@ -412,4 +422,5 @@ public class MainActivity extends AppCompatActivity {
         super.onStop();
         releaseDispatcher();
     }
+
 }
